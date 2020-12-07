@@ -12,23 +12,14 @@ const album = require("./src/routes/albumRoutes");
 const song = require("./src/routes/songRoutes");
 const user = require("./src/routes/userRoutes");
 
-
-
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(bodyParser.json());
 
-
-app.use(authRoutes);
-app.use('/api',artist);
-app.use('/api',album);
-app.use('/api',song);
-app.use('/api',user)
-
-
-const MongoUri ="mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
+const MongoUri =
+  "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
 mongoose.connect(MongoUri, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -43,7 +34,24 @@ mongoose.connection.on("error", (err) => {
   console.error("error connecting mongoose", err);
 });
 
-app.get("/api",  (req, res) => {
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requseted-With, Content-Type, Accept , Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+
+  next();
+});
+
+app.use(authRoutes);
+app.use("/api/artist", artist);
+app.use("/api", album);
+app.use("/api", song);
+app.use("/api/users", user);
+
+app.get("/api", (req, res) => {
   res.send(`You are in Api`);
 });
 
