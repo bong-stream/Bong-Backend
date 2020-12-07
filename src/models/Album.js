@@ -10,7 +10,7 @@ const AlbumSchema = new mongoose.Schema({
     
   });
 
-  AlbumSchema.plugin(mongoosastic);
+  //AlbumSchema.plugin(mongoosastic);
   
 
   mongoose.model('Album', AlbumSchema);

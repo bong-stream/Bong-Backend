@@ -8,6 +8,6 @@ const PodcastSchema = new mongoose.Schema({
     noofplays:{type:Number}
 });
 
-PodcastSchema.plugin(mongoosastic);
+//PodcastSchema.plugin(mongoosastic);
 
 mongoose.model('Podcast', PodcastSchema);

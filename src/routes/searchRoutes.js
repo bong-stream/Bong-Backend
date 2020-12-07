@@ -13,23 +13,23 @@ const router = express.Router();
 //router.use(requireAuth);
 
 router.get('/', async (req, res) => {
-  const {searc}=req.body;
+  const {search}=req.body;
   try {
-    const song= await Song.search({songname:searc})
-    const podcast= await Podcast.search({podname:searc});
-    const artist=await Artist.search({artistname:searc});
-    const album=await Album.searchs({albumname:searc});
+    const song= await Song.find({songname:search});
+    const podcast= await Podcast.find({podname:search});
+    const artist=await Artist.find({artistname:search});
+    const album=await Album.find({albumname:search});
 
     if(!song || !artist || !podcast || !album){
         return res.status(422).send({ error: 'Not found' });
     }else{
-        const searc={
+        const search={
             song,
             podcast,
             artist,
             album
         }
-        res.send(searc);
+        res.send(search);
     } 
   } catch (err) {
     return res

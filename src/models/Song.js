@@ -10,6 +10,6 @@ const SongsSchema = new mongoose.Schema({
     noofplays:{type:Number}
 });
 
-SongsSchema.plugin(mongoosastic);
+//SongsSchema.plugin(mongoosastic);
 
 mongoose.model('Song', SongsSchema);

@@ -7,6 +7,6 @@ const ArtistSchema = new mongoose.Schema({
   artistlikes: { type: Number },
 });
 
-ArtistSchema.plugin(mongoosastic);
+//ArtistSchema.plugin(mongoosastic);
 
 mongoose.model("Artist", ArtistSchema);
