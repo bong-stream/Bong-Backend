@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosastic = require('mongoosastic');
 
 const AlbumSchema = new mongoose.Schema({
     artist:{type:mongoose.Schema.Types.ObjectId,ref:'Artist'},
@@ -8,6 +9,8 @@ const AlbumSchema = new mongoose.Schema({
     albumlikes:{type:Number}
     
   });
+
+  AlbumSchema.plugin(mongoosastic);
   
 
   mongoose.model('Album', AlbumSchema);

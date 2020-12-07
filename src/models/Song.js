@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosastic = require('mongoosastic');
 
 const SongsSchema = new mongoose.Schema({
     albumid:{type:mongoose.Schema.Types.ObjectId,ref:'Album'},
@@ -8,5 +9,7 @@ const SongsSchema = new mongoose.Schema({
     songlikes:{type:Number},
     noofplays:{type:Number}
 });
+
+SongsSchema.plugin(mongoosastic);
 
 mongoose.model('Song', SongsSchema);

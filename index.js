@@ -2,6 +2,7 @@ require("./src/models/User");
 require("./src/models/Artist");
 require("./src/models/Album");
 require("./src/models/Song");
+require('./src/models/Podcast');
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -11,6 +12,8 @@ const artist = require("./src/routes/artistRoutes");
 const album = require("./src/routes/albumRoutes");
 const song = require("./src/routes/songRoutes");
 const user = require("./src/routes/userRoutes");
+const podcast = require("./src/routes/podcastRoutes");
+const search = require("./src/routes/searchRoutes");
 
 const PORT = process.env.PORT || 3001;
 
@@ -49,7 +52,9 @@ app.use(authRoutes);
 app.use("/api/artist", artist);
 app.use("/api", album);
 app.use("/api", song);
+app.use("/api/podcast", podcast);
 app.use("/api/users", user);
+app.use('/api/search',search);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);
