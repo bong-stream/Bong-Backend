@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
   const { artistname, artistimage } = req.body;
   console.log(req.body);
 
-  if (!name || !image) {
+  if (!artistname || !artistimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
@@ -34,15 +34,15 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { artistname, artistimage,_id } = req.body;
+  const { artistname, artistimage, _id } = req.body;
   console.log(req.body);
- 
+
   Artist.findById(_id, (err, event) => {
     try {
       event.updateOne(
         {
           artistname,
-          artistimage
+          artistimage,
         },
         (err, updatedEvent) => {
           if (err) {
@@ -56,7 +56,6 @@ router.put("/", async (req, res) => {
                 id: foundUpdatedEvent._id,
                 artistname: foundUpdatedEvent.artistname,
                 artistimage: foundUpdatedEvent.artistimage,
-                
               });
               return foundUpdatedEvent;
             });
@@ -67,20 +66,6 @@ router.put("/", async (req, res) => {
       res.status(422).send({ error: err.message });
     }
   });
-
-if (!name || !image) {
-  return res.status(422).send({ error: "You must provide a name,image" });
-}
-
-try {
-  const artist = new Artist({ artistname, artistimage });
-
-  artist.save();
-  console.log(artist);
-  res.status(201).json(artist);
-} catch (err) {
-  res.status(422).send({ error: err.message });
-}
 });
 
 router.delete("/", (req, res, next) => {
