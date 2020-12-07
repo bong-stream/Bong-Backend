@@ -53,7 +53,7 @@ router.put("/", async (req, res) => {
               console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",
-                //id: foundUpdatedEvent.id,
+                id: foundUpdatedEvent._id,
                 artistname: foundUpdatedEvent.artistname,
                 artistimage: foundUpdatedEvent.artistimage,
                 
