@@ -18,9 +18,9 @@ router.post("/", async (req, res) => {
   const { artistname, artistimage } = req.body;
   console.log(req.body);
 
-  // if (!name || !image) {
-  //   return res.status(422).send({ error: "You must provide a name,image" });
-  // }
+  if (!name || !image) {
+    return res.status(422).send({ error: "You must provide a name,image" });
+  }
 
   try {
     const artist = new Artist({ artistname, artistimage });
@@ -33,61 +33,55 @@ router.post("/", async (req, res) => {
   }
 });
 
-// router.put("/", async (req, res) => {
-//   const { artistname, artistimage } = req.body;
-//   console.log(req.body);
+router.put("/", async (req, res) => {
+  const { artistname, artistimage,_id } = req.body;
+  console.log(req.body);
+ 
+  Artist.findById(_id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          artistname,
+          artistimage
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("yoooooo");
+            Artist.findById(_id, (err, foundUpdatedEvent) => {
+              console.log(foundUpdatedEvent);
+              res.status(201).json({
+                message: "Updated event",
+                //id: foundUpdatedEvent.id,
+                artistname: foundUpdatedEvent.artistname,
+                artistimage: foundUpdatedEvent.artistimage,
+                
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
 
-//   Artist.findById(_id, (err, event) => {
-//     try {
-//       event.updateOne(
-//         {
-//           title,
-//           start,
-//           end,
-//           desc,
-//           allDay,
-//         },
-//         (err, updatedEvent) => {
-//           if (err) {
-//             console.log("error updating", err);
-//           } else {
-//             console.log("yoooooo");
-//             Calendar.findById(_id, (err, foundUpdatedEvent) => {
-//               console.log(foundUpdatedEvent);
-//               res.status(201).json({
-//                 message: "Updated event",
-//                 id: foundUpdatedEvent.id,
-//                 title: foundUpdatedEvent.title,
-//                 start: foundUpdatedEvent.start,
-//                 end: foundUpdatedEvent.end,
-//                 desc: foundUpdatedEvent.desc,
-//                 allDay: foundUpdatedEvent.allDay,
-//               });
-//               return foundUpdatedEvent;
-//             });
-//           }
-//         }
-//       );
-//     } catch (err) {
-//       const error = new HttpError("failed updating events", 500);
-//       return next(error);
-//     }
-//   });
+if (!name || !image) {
+  return res.status(422).send({ error: "You must provide a name,image" });
+}
 
-// if (!name || !image) {
-//   return res.status(422).send({ error: "You must provide a name,image" });
-// }
+try {
+  const artist = new Artist({ artistname, artistimage });
 
-// try {
-//   const artist = new Artist({ artistname, artistimage });
-
-//   artist.save();
-//   console.log(artist);
-//   res.status(201).json(artist);
-// } catch (err) {
-//   res.status(422).send({ error: err.message });
-// }
-// });
+  artist.save();
+  console.log(artist);
+  res.status(201).json(artist);
+} catch (err) {
+  res.status(422).send({ error: err.message });
+}
+});
 
 router.delete("/", (req, res, next) => {
   console.log("dleetinggggg");
