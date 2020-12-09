@@ -7,7 +7,7 @@ const ArtistSchema = new mongoose.Schema({
   artistimage: { type: String, required: true },
   artistlikes: { type: Number },
 
-  __v: { type: Number, select: false },
+  __v: { type: Number, select: false }
 });
 
 ArtistSchema.plugin(mongoosastic);
