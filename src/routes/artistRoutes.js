@@ -36,15 +36,16 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { artistname, artistimage, _id } = req.body;
-  console.log(req.body);
+  const { artistname, artistimage, id, albums } = req.body;
+  console.log(albums, id);
 
-  Artist.findById(_id, (err, event) => {
+  Artist.findById(id, (err, event) => {
     try {
       event.updateOne(
         {
           artistname,
           artistimage,
+          albums,
         },
         (err, updatedEvent) => {
           if (err) {
@@ -58,6 +59,7 @@ router.put("/", async (req, res) => {
                 id: foundUpdatedEvent._id,
                 artistname: foundUpdatedEvent.artistname,
                 artistimage: foundUpdatedEvent.artistimage,
+                albums: foundUpdatedEvent.albums,
               });
               return foundUpdatedEvent;
             });
