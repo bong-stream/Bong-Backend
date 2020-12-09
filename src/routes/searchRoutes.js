@@ -37,11 +37,6 @@ router.get('/', async (req, res) => {
     .send({ error: 'something went wrong while searching' });
       
   }
-
-  
-
-
-  
 });
 
 module.exports = router;

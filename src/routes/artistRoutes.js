@@ -15,16 +15,18 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { artistname, artistimage } = req.body;
-  console.log(req.body);
+  const { artistname, artistimage } = req.body.data;
+  const albums = req.body.albums;
+  console.log(req.body.albums);
+  console.log(artistname, artistimage, albums);
 
   if (!artistname || !artistimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
   try {
-    const artist = new Artist({ artistname, artistimage });
-
+    const artist = new Artist({ artistname, artistimage, albums });
+    console.log(artist);
     artist.save();
     console.log(artist);
     res.status(201).json(artist);
@@ -49,7 +51,7 @@ router.put("/", async (req, res) => {
             console.log("error updating", err);
           } else {
             console.log("yoooooo");
-            Artist.findById(_id, (err, foundUpdatedEvent) => {
+            Artist.findById(id, (err, foundUpdatedEvent) => {
               console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",

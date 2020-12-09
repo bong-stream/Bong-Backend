@@ -2,7 +2,7 @@ require("./src/models/User");
 require("./src/models/Artist");
 require("./src/models/Album");
 require("./src/models/Song");
-require('./src/models/Podcast');
+require("./src/models/Podcast");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -50,11 +50,11 @@ app.use((req, res, next) => {
 
 app.use(authRoutes);
 app.use("/api/artist", artist);
-app.use("/api", album);
+app.use("/api/album", album);
 app.use("/api", song);
 app.use("/api/podcast", podcast);
 app.use("/api/users", user);
-app.use('/api/search',search);
+app.use("/api/search", search);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);
