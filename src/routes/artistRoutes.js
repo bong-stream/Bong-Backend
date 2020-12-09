@@ -36,10 +36,10 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { artistname, artistimage, id } = req.body;
-  console.log(id);
+  const { artistname, artistimage, _id } = req.body;
+  console.log(req.body);
 
-  Artist.findById(id, (err, event) => {
+  Artist.findById(_id, (err, event) => {
     try {
       event.updateOne(
         {

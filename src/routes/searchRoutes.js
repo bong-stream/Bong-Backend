@@ -15,7 +15,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const {search}=req.body;
   try {
-    const song= await Song.find({songname:search})
+    const song= await Song.find({songname:search});
     const podcast= await Podcast.find({podname:search});
     const artist=await Artist.find({artistname:search});
     const album=await Album.find({albumname:search});

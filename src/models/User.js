@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, required: true },
 });
 
-userSchema.plugin(mongoosastic);
+//userSchema.plugin(mongoosastic);
 
 userSchema.pre("save", function (next) {
   const user = this;

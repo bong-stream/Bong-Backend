@@ -9,6 +9,7 @@ const AlbumSchema = new mongoose.Schema({
   albumlikes: { type: Number },
 });
 
-AlbumSchema.plugin(mongoosastic);
+  //AlbumSchema.plugin(mongoosastic);
+  
 
 mongoose.model("Album", AlbumSchema);
