@@ -10,6 +10,6 @@ const ArtistSchema = new mongoose.Schema({
   __v: { type: Number, select: false }
 });
 
-ArtistSchema.plugin(mongoosastic);
+//ArtistSchema.plugin(mongoosastic);
 
 mongoose.model("Artist", ArtistSchema);
