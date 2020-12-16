@@ -7,20 +7,9 @@ const songs = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-
-    required: true,
-  },
+  name: {type: String,required: true,},
+  email: {type: String,unique: true,required: true},
+  password: {type: String,required: true},
   age: { type: String, required: true },
   gender: { type: String, required: true },
 });
