@@ -1,9 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const requireAuth = require("../midlewares/requireAuth");
 const User = mongoose.model("User");
 
 const router = express.Router();
+
+router.get("/current",requireAuth,async(req,res)=>{
+  //console.log(req.user)
+  const user=req.user;
+  res.send(user)
+})
 
 router.get("/", async (req, res) => {
   const user = await User.find({}, "-password");
@@ -12,10 +19,10 @@ router.get("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  console.log("dleetinggggg");
+
 
   const { id } = req.body;
-  console.log(id);
+  
 
   User.findById(id, (err, event) => {
     try {
@@ -30,6 +37,39 @@ router.delete("/", async (req, res) => {
           });
         }
       });
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
+
+router.put("/", async (req, res) => {
+  const { name,email,password,age,gender,id } = req.body;
+  console.log(name,id);
+
+  User.findById(id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          name,email,password,age,gender,
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("Song Updated");
+            User.findById(id, (err, foundUpdatedEvent) => {
+              console.log(foundUpdatedEvent);
+              res.status(201).json({
+                message: "Updated event",
+                id: foundUpdatedEvent._id,
+                name:foundUpdatedEvent.name
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
     } catch (err) {
       res.status(422).send({ error: err.message });
     }

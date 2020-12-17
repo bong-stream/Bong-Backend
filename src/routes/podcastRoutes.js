@@ -32,7 +32,66 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
 
+
+  const { id } = req.body;
+  
+
+ Podcast.findById(id, (err, event) => {
+    try {
+      event.remove((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("deleted successfuly");
+          res.status(201).json({
+            message: "Podcast Deleted Successfully",
+            id: id,
+          });
+        }
+      });
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
+
+router.put("/", async (req, res) => {
+  const { podname, podimage,podlikes,noofplays,id } = req.body;
+  console.log(podname,id);
+
+  Podcast.findById(id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          podname, podimage,podlikes,noofplays,
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("Podcast Updated");
+            Podcast.findById(id, (err, foundUpdatedEvent) => {
+              console.log(foundUpdatedEvent);
+              res.status(201).json({
+                message: "Updated event",
+                id: foundUpdatedEvent._id,
+                podname:foundUpdatedEvent.podname,
+                podimage:foundUpdatedEvent.podimage,
+                podlikes:foundUpdatedEvent.podlikes,
+                noofplays:foundUpdatedEvent.noofplays
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
 
 
 

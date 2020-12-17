@@ -15,22 +15,33 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const {search}=req.body;
   try {
-    const song= await Song.find({songname:search});
-    const podcast= await Podcast.find({podname:search});
-    const artist=await Artist.find({artistname:search});
-    const album=await Album.find({albumname:search});
+          const song= await Song.find({songname:{$regex:new RegExp(search)}}).limit(10);
+          const podcast= await Podcast.find({podname:{$regex:new RegExp(search)}}).limit(10);
+          const artist=await Artist.find({artistname:{$regex:new RegExp(search)}}).limit(10);
+          const album=await Album.find({albumname:{$regex:new RegExp(search)}}).limit(10);
 
-    if(!song || !artist || !podcast || !album){
-        return res.status(422).send({ error: 'Not found' });
-    }else{
-        const search={
-            song,
-            podcast,
-            artist,
-            album
-        }
-        res.send(search);
-    } 
+          if(!song || !artist || !podcast || !album){
+              return res.status(422).send({ error: 'Not found' });
+          }else{
+              const search={
+                  song,
+                  podcast,
+                  artist,
+                  album
+              }
+              res.json(search);
+          } 
+
+
+
+          // Song.find({
+          //   songname:{$regex:new RegExp(search)}
+          // },function(err,data){
+          //   console.log(data)
+          //   res.json(data);
+          // }).limit(10);
+
+
   } catch (err) {
     return res
     .status(422)
