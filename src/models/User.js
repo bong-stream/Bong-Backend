@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
   password: {type: String,required: true},
   age: { type: String, required: true },
   gender: { type: String, required: true },
+  songs:{type:Array,required:false}
 });
+
+
 
 //userSchema.plugin(mongoosastic);
 

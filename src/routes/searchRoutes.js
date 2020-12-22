@@ -24,11 +24,12 @@ router.get('/', async (req, res) => {
               return res.status(422).send({ error: 'Not found' });
           }else{
               const search={
+                search:{
                   song,
                   podcast,
                   artist,
                   album
-              }
+              }}
               res.json(search);
           } 
 
