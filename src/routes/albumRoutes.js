@@ -15,14 +15,16 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { albumname, albumimage } = req.body;
+  const { albumname, albumimage, artists, songs } = req.body;
+
+  console.log(albumname, albumimage, artists, songs);
 
   if (!albumname || !albumimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
   try {
-    const album = new Album({ albumname, albumimage });
+    const album = new Album({ albumname, albumimage, artists, songs });
     await album.save();
     res.status(201).json(album);
   } catch (err) {
@@ -31,7 +33,7 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { albumname, albumimage, id } = req.body;
+  const { albumname, albumimage, id, artists, songs } = req.body;
   console.log(id);
 
   Album.findById(id, (err, album) => {
@@ -40,6 +42,8 @@ router.put("/", async (req, res) => {
         {
           albumname,
           albumimage,
+          artists,
+          songs,
         },
         (err, updatedalbum) => {
           if (err) {
@@ -53,6 +57,8 @@ router.put("/", async (req, res) => {
                 id: foundUpdatedEvent._id,
                 albumname: foundUpdatedEvent.albumname,
                 albumimage: foundUpdatedEvent.albumimage,
+                artists: foundUpdatedEvent.artists,
+                songs: foundUpdatedEvent.songs,
               });
               return foundUpdatedEvent;
             });
