@@ -3,11 +3,13 @@ const mongoosastic = require("mongoosastic");
 
 const SongsSchema = new mongoose.Schema({
   albumid: { type: mongoose.Schema.Types.ObjectId, ref: "Album" },
-  artistid: { type: mongoose.Schema.Types.ObjectId, ref: "Artist" },
+  artists: { type: Array },
   songname: { type: String, required: true },
   songimage: { type: String, required: true },
   songlikes: { type: Number },
   noofplays: { type: Number },
+  fileid: { type: String },
+
   __v: { type: Number, select: false },
 });
 
