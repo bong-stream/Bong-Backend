@@ -20,22 +20,46 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const MongoUri =
-  "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
-mongoose.connect(MongoUri, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+let db;
+mongoose
+  .connect(
+    "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+    }
+  )
+  .then((client) => {
+    // console.log(db);
+    // console.log(client.connections[0].db);
 
-mongoose.connection.on("connected", () => {
-  console.log("connected to mongo");
-});
+    db = client.connections[0].db;
+    app.set("db", db);
+    console.log("db connected");
+  })
+  .catch((err) => {
+    console.log("error", err.message);
+  });
 
-mongoose.connection.on("error", (err) => {
-  console.error("error connecting mongoose", err);
-});
+// const MongoUri =
+//   "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
+// mongoose.connect(MongoUri, {
+//   useNewUrlParser: true,
+//   useCreateIndex: true,
+//   useUnifiedTopology: true,
+// });
+
+// mongoose.connection.on("connected", (db) => {
+//   console.log(db);
+//   console.log("connected to mongo");
+// });
+
+// mongoose.connection.on("error", (err) => {
+//   console.error("error connecting mongoose", err);
+// });
+
+// console.log(MongoUri);
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -51,7 +75,7 @@ app.use((req, res, next) => {
 app.use(authRoutes);
 app.use("/api/artist", artist);
 app.use("/api/album", album);
-app.use("/api", song);
+app.use("/api/song", song);
 app.use("/api/podcast", podcast);
 app.use("/api/users", user);
 app.use("/api/search", search);
