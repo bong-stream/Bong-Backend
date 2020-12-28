@@ -14,6 +14,9 @@ const song = require("./src/routes/songRoutes");
 const user = require("./src/routes/userRoutes");
 const podcast = require("./src/routes/podcastRoutes");
 const search = require("./src/routes/searchRoutes");
+const trending = require("./src/routes/trendingRoutes");
+const popular = require("./src/routes/popularRoutes");
+const topcharts = require("./src/routes/topchartsRoutes");
 
 const PORT = process.env.PORT || 3001;
 
@@ -42,25 +45,6 @@ mongoose
     console.log("error", err.message);
   });
 
-// const MongoUri =
-//   "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
-// mongoose.connect(MongoUri, {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   useUnifiedTopology: true,
-// });
-
-// mongoose.connection.on("connected", (db) => {
-//   console.log(db);
-//   console.log("connected to mongo");
-// });
-
-// mongoose.connection.on("error", (err) => {
-//   console.error("error connecting mongoose", err);
-// });
-
-// console.log(MongoUri);
-
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -79,6 +63,9 @@ app.use("/api/song", song);
 app.use("/api/podcast", podcast);
 app.use("/api/users", user);
 app.use("/api/search", search);
+app.use("/api/trending", trending);
+app.use("/api/popular", popular);
+app.use("/api/topcharts", topcharts);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);
