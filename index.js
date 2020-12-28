@@ -14,6 +14,9 @@ const song = require("./src/routes/songRoutes");
 const user = require("./src/routes/userRoutes");
 const podcast = require("./src/routes/podcastRoutes");
 const search = require("./src/routes/searchRoutes");
+const trending = require("./src/routes/trendingRoutes");
+const popular = require("./src/routes/popularRoutes");
+const topcharts = require("./src/routes/topchartsRoutes");
 
 var  path = require("path");
 var  cookieParser = require("cookie-parser");
@@ -98,6 +101,9 @@ app.use("/api/song", song);
 app.use("/api/podcast", podcast);
 app.use("/api/users", user);
 app.use("/api/search", search);
+app.use("/api/trending", trending);
+app.use("/api/popular", popular);
+app.use("/api/topcharts", topcharts);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);
