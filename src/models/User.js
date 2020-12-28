@@ -8,10 +8,11 @@ const songs = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
+  email: { type: String,required:false,unique:true},
   password: { type: String, required: true },
   age: { type: String, required: true },
   gender: { type: String, required: true },
+  phoneNumber: {type: Number,required:false,unique:true},
 
   __v: { type: Number, select: false },
 });
