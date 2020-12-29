@@ -9,7 +9,6 @@ const router = express.Router();
 const sendOtp = new SendOtp("9146A4XsuWgB5fe97a0fP123");
 
 router.post("/sendotp", (req, res) => {
-  console.log("mereko ander ni jany dy rha");
   sendOtp.send(req.body.phoneNumber, "id_of_send", (err, data) => {
     console.log(data);
     if (err) return res.json({ err });
@@ -28,18 +27,19 @@ router.post("/verify", (req, res) => {
         if (err) return res.json({ err });
         if (!user) {
           // user signup
-          console.log("mughy chlna tha");
+          console.log("new user");
           res.json({ success: true, message: data.message });
         }
         if (user) {
           // user signin
-          console.log("ma chla hn");
+          console.log("old user");
           res.json({ success: false, message: data.message });
         }
       });
     }
-    if (data.type == "error")
+    if (data.type == "error") {
       res.json({ success: false, message: data.message });
+    }
   });
 });
 
