@@ -10,7 +10,6 @@ const router = express.Router();
 const  sendOtp = new  SendOtp("9146A4XsuWgB5fe97a0fP123");
 
 router.post('/sendotp',(req,res) => {
-    console.log("mereko ander ni jany dy rha");
     sendOtp.send(req.body.phoneNumber,"id_of_send", (err, data) => {
         console.log(data);
         if (err) return  res.json({ err });
@@ -29,12 +28,12 @@ router.post('/verify',(req,res) => {
                 if (err) return  res.json({ err });
                 if (!user) {
                     // user signup
-                    console.log("mughy chlna tha");
+                    console.log("new user");
                     res.json({success:true,message:  data.message})
                 }
                 if (user) {
                     // user signin
-                    console.log('ma chla hn');
+                    console.log('old user');
                     res.json({ success:  false, message:  data.message });
                 }
             });
@@ -49,10 +48,10 @@ router.post('/signup', async(req,res)=>{
    if(email){
         try {
             const user=new User({name,email,password,age,gender});
-        await user.save();
+            await user.save();
 
-        const token=jwt.sign({userId:user._id},'My_Secret_Key');
-        res.send({token});
+            const token=jwt.sign({userId:user._id},'My_Secret_Key');
+            res.send({token});
             
         } catch (err) {
             return res.status(401).send(err.message);
@@ -60,10 +59,10 @@ router.post('/signup', async(req,res)=>{
     }else{
         try {
             const user=new User({name,phoneNumber:number,password,age,gender});
-        await user.save();
-    
-        const token=jwt.sign({userId:user._id},'My_Secret_Key');
-        res.send({token});
+            await user.save();
+        
+            const token=jwt.sign({userId:user._id},'My_Secret_Key');
+            res.send({token});
             
         } catch (err) {
             return res.status(401).send(err.message);
