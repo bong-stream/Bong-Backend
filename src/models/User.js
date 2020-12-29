@@ -2,22 +2,20 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const mongoosastic = require("mongoosastic");
 
-const songs = new mongoose.Schema({
-  songid: { type: mongoose.Schema.Types.ObjectId, ref: "Song" },
-});
+// const songs = new mongoose.Schema({
+//   songid: { type: mongoose.Schema.Types.ObjectId, ref: "Song" },
+// });
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String,required:false,unique:true},
+  email: { type: String, unique: true },
   password: { type: String, required: true },
   age: { type: String, required: true },
   gender: { type: String, required: true },
-  phoneNumber: {type: Number,required:false,unique:true},
+  phoneNumber: { type: String, unique: true },
 
-  __v: { type: Number, select: false },
+  // __v: { type: Number, select: false },
 });
-
-
 
 //userSchema.plugin(mongoosastic);
 
