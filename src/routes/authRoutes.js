@@ -47,6 +47,7 @@ router.post("/signup", async (req, res) => {
   //console.log(req.body)
   const { name, email, number, password, age, gender } = req.body;
   if (email) {
+      console.log(req.body);
     let phoneNumber = "";
     try {
       const user = new User({
@@ -59,7 +60,6 @@ router.post("/signup", async (req, res) => {
       });
       console.log(user);
       await user.save();
-      res.send(user);
 
       const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
       res.send({ token });
@@ -67,7 +67,7 @@ router.post("/signup", async (req, res) => {
       return res.status(401).send(err.message);
     }
   } else {
-    3;
+    console.log(req.body);
     let email = "";
     try {
       const user = new User({
@@ -78,10 +78,11 @@ router.post("/signup", async (req, res) => {
         gender,
         email,
       });
-      await user.save();
+       await user.save();
+    //console.log(user);
 
-      const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
-      res.send({ token });
+       const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
+       res.send({ token });
     } catch (err) {
       return res.status(401).send(err.message);
     }
