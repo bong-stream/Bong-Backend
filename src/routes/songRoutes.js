@@ -99,7 +99,7 @@ router.post("/", upload.single("file"), async (req, res) => {
     const song = new Song({ songname, songimage, artists, fileid });
     await song.save();
     console.log(song);
-    // res.send(song);
+    res.send(song);
   } catch (err) {
     res.status(422).send({ error: err.message });
   }
