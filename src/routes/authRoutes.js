@@ -47,43 +47,60 @@ router.post("/signup", async (req, res) => {
   //console.log(req.body)
   const { name, email, number, password, age, gender } = req.body;
   if (email) {
-      console.log(req.body);
+    console.log(req.body);
     let phoneNumber = "";
-    try {
-      const user = new User({
-        name,
-        email,
-        password,
-        age,
-        gender,
-      });
+    User.findOne({ email: email }).then(async (user) => {
       console.log(user);
-      await user.save();
+      if (user) {
+        res.status(401).json({
+          message: "User Already Exists",
+        });
+      } else {
+        try {
+          const user = new User({
+            name,
+            email,
+            password,
+            age,
+            gender,
+          });
+          console.log(user);
+          await user.save();
 
-      const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
-      res.send({ token });
-    } catch (err) {
-      return res.status(401).send(err.message);
-    }
+          const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
+          res.send({ token, user });
+        } catch (err) {
+          return res.status(401).send(err.message);
+        }
+      }
+    });
   } else {
     console.log(req.body);
     let email = "";
-    try {
-      const user = new User({
-        name,
-        phoneNumber: number,
-        password,
-        age,
-        gender,
-      });
-       await user.save();
-    //console.log(user);
+    User.findOne({ phoneNumber: number }).then(async (user) => {
+      if (user) {
+        res.status(401).json({
+          message: "User Already Exists",
+        });
+      } else {
+        try {
+          const user = new User({
+            name,
+            phoneNumber: number,
+            password,
+            age,
+            gender,
+          });
+          await user.save();
+          //console.log(user);
 
-       const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
-       res.send({ token });
-    } catch (err) {
-      return res.status(401).send(err.message);
-    }
+          const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
+          res.send({ token, user });
+        } catch (err) {
+          return res.status(401).send(err.message);
+        }
+      }
+    });
   }
 });
 
