@@ -56,7 +56,6 @@ router.post("/signup", async (req, res) => {
         password,
         age,
         gender,
-        phoneNumber,
       });
       console.log(user);
       await user.save();
@@ -76,7 +75,6 @@ router.post("/signup", async (req, res) => {
         password,
         age,
         gender,
-        email,
       });
        await user.save();
     //console.log(user);

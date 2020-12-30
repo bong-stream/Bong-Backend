@@ -8,11 +8,11 @@ const mongoosastic = require("mongoosastic");
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String},
+  email: { type: String },
   password: { type: String, required: true },
   age: { type: String, required: true },
   gender: { type: String, required: true },
-  phoneNumber: { type: String},
+  phoneNumber: { type: String },
 
   // __v: { type: Number, select: false },
 });
