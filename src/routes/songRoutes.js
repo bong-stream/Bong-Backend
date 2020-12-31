@@ -107,13 +107,24 @@ router.post("/", upload.single("file"), async (req, res) => {
 
 router.delete("/", async (req, res) => {
   const { id } = req.body;
+  let db = req.app.get("db");
 
   Song.findById(id, (err, event) => {
+    console.log(db);
+
+    // console.log(deleteStream);
     try {
+      let bucket = new mongodb.GridFSBucket(db, {
+        bucketName: "songs",
+      });
+
+      const obj_id = new mongoose.Types.ObjectId(event.fileid);
+
       event.remove((err) => {
         if (err) {
           console.log(err);
         } else {
+          bucket.delete(obj_id);
           console.log("deleted successfuly");
           res.status(201).json({
             message: "Song Deleted Successfully",
