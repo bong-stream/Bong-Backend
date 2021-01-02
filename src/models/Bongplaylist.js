@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const mongoosastic = require("mongoosastic");
 
-const TrendingSchema = new mongoose.Schema({
-  trending: { type: Array, required: true },
+const BongplaylistSchema = new mongoose.Schema({
+  bongplaylist: { type: Array, required: true },
   active: { type: Boolean, default: true },
 
   __v: { type: Number, select: false },
@@ -10,6 +10,6 @@ const TrendingSchema = new mongoose.Schema({
 
 // TrendingSchema.plugin(mongoosastic);
 
-var Trending = mongoose.model("Trending", TrendingSchema);
+var Bongplaylist = mongoose.model("Bongplaylist", BongplaylistSchema);
 
-module.exports = Trending;
+module.exports = Bongplaylist;

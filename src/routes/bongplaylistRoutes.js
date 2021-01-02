@@ -3,50 +3,50 @@ const mongoose = require("mongoose");
 const requireAuth = require("../midlewares/requireAuth");
 
 // const Popular = mongoose.model("Trending");
-const Popular = require("../models/Popular");
+const Bongplaylist = require("../models/Bongplaylist");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   //   res.send("i am trending");
-  const popular = await Popular.find({});
+  const bongplaylist = await Bongplaylist.find({});
 
-  res.send(popular);
+  res.send(bongplaylist);
 });
 
 router.post("/", async (req, res) => {
-  const popular = req.body;
+  const bongplaylist = req.body;
 
   try {
-    const popularList = new Popular(popular);
-    await popularList.save();
-    console.log(popularList);
-    res.send(popularList);
+    const bongplaylistres = new Bongplaylist(bongplaylist);
+    await bongplaylistres.save();
+    console.log(bongplaylistres);
+    res.send(bongplaylistres);
   } catch (err) {
     res.status(422).send({ error: err.message });
   }
 });
 
 router.put("/", async (req, res) => {
-  const { popular, active } = req.body;
-  let id = "5fef345663cb1e3a1cd36877";
+  const { bongplaylist, active } = req.body;
+  let id = "5ff028bb82654121a8460403";
 
   //   console.log(trending);
 
   try {
-    Popular.findById(id, (err, foundList) => {
+    Bongplaylist.findById(id, (err, foundList) => {
       if (err) {
         res.send(err);
       } else {
-        foundList.updateOne({ popular, active }, (err, updatedList) => {
+        foundList.updateOne({ bongplaylist, active }, (err, updatedList) => {
           if (err) {
             res.send({ message: "error updating list" });
           } else {
-            Popular.findById(id, (err, foundList) => {
+            Bongplaylist.findById(id, (err, foundList) => {
               res.status(201).json({
                 message: "Updated List",
                 id: foundList._id,
-                popular: foundList.popular,
+                bongplaylist: foundList.bongplaylist,
                 active: foundList.active,
               });
               return foundList;

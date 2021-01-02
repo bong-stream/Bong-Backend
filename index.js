@@ -17,6 +17,10 @@ const search = require("./src/routes/searchRoutes");
 const trending = require("./src/routes/trendingRoutes");
 const popular = require("./src/routes/popularRoutes");
 const topcharts = require("./src/routes/topchartsRoutes");
+const bongplaylist = require("./src/routes/bongplaylistRoutes");
+const recommended = require("./src/routes/recommendedRoutes");
+const topartists = require("./src/routes/topartistsRoutes");
+const topalbums = require("./src/routes/topalbumsRoutes");
 
 var  path = require("path");
 var  cookieParser = require("cookie-parser");
@@ -103,6 +107,10 @@ app.use("/api/search", search);
 app.use("/api/trending", trending);
 app.use("/api/popular", popular);
 app.use("/api/topcharts", topcharts);
+app.use("/api/bongplaylist", bongplaylist);
+app.use("/api/recommended", recommended);
+app.use("/api/topalbums", topalbums);
+app.use("/api/topartists", topartists);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);

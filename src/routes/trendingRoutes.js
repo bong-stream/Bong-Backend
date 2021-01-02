@@ -28,8 +28,8 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const trending = req.body;
-  let id = "5fe897a108b02e18e454133a";
+  const { trending, active } = req.body;
+  let id = "5fef33fcfc460b3dacbb81c2";
 
   //   console.log(trending);
 
@@ -38,7 +38,7 @@ router.put("/", async (req, res) => {
       if (err) {
         res.send(err);
       } else {
-        foundList.updateOne({ trending }, (err, updatedList) => {
+        foundList.updateOne({ trending, active }, (err, updatedList) => {
           if (err) {
             res.send({ message: "error updating list" });
           } else {
@@ -47,6 +47,7 @@ router.put("/", async (req, res) => {
                 message: "Updated List",
                 id: foundList._id,
                 trending: foundList.trending,
+                active: foundList.active,
               });
               return foundList;
             });
