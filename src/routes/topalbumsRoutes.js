@@ -3,50 +3,50 @@ const mongoose = require("mongoose");
 const requireAuth = require("../midlewares/requireAuth");
 
 // const Popular = mongoose.model("Trending");
-const Popular = require("../models/Popular");
+const Topalbums = require("../models/Topalbums");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   //   res.send("i am trending");
-  const popular = await Popular.find({});
+  const topalbums = await Topalbums.find({});
 
-  res.send(popular);
+  res.send(topalbums);
 });
 
 router.post("/", async (req, res) => {
-  const popular = req.body;
+  const topalbums = req.body;
 
   try {
-    const popularList = new Popular(popular);
-    await popularList.save();
-    console.log(popularList);
-    res.send(popularList);
+    const topalbumsres = new Topalbums(topalbums);
+    await topalbumsres.save();
+    console.log(topalbumsres);
+    res.send(topalbumsres);
   } catch (err) {
     res.status(422).send({ error: err.message });
   }
 });
 
 router.put("/", async (req, res) => {
-  const { popular, active } = req.body;
-  let id = "5fef345663cb1e3a1cd36877";
+  const { topalbums, active } = req.body;
+  let id = "5ff02a0e0fb98141144b32fc";
 
   //   console.log(trending);
 
   try {
-    Popular.findById(id, (err, foundList) => {
+    Topalbums.findById(id, (err, foundList) => {
       if (err) {
         res.send(err);
       } else {
-        foundList.updateOne({ popular, active }, (err, updatedList) => {
+        foundList.updateOne({ topalbums, active }, (err, updatedList) => {
           if (err) {
             res.send({ message: "error updating list" });
           } else {
-            Popular.findById(id, (err, foundList) => {
+            Topalbums.findById(id, (err, foundList) => {
               res.status(201).json({
                 message: "Updated List",
                 id: foundList._id,
-                popular: foundList.popular,
+                topalbums: foundList.topalbums,
                 active: foundList.active,
               });
               return foundList;
