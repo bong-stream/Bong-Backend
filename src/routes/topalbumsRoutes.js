@@ -4,12 +4,29 @@ const requireAuth = require("../midlewares/requireAuth");
 
 // const Popular = mongoose.model("Trending");
 const Topalbums = require("../models/Topalbums");
+const Song = mongoose.model("Song");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   //   res.send("i am trending");
   const topalbums = await Topalbums.find({});
+
+  // topalbums[0].topalbums.map(async (value) => {
+  //   let song;
+  //   value.songs
+  //     .map(async (id) => {
+  //       await Song.findById(id, (err, foundSong) => {
+  //         // console.log(foundSong);
+  //         // song.push(foundSong);
+  //         return foundSong;
+  //       });
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  //   // console.log("i am song data", song);
+  // });
 
   res.send(topalbums);
 });

@@ -13,32 +13,32 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { topchart, name } = req.body;
+  const { topcharts, active } = req.body;
   //   console.log(top20, top50, top100);
   //   console.log(req.body);
 
   try {
-    const topcharts = new Topcharts({ topchart, name });
-    await topcharts.save();
-    console.log(topcharts);
-    res.send(topcharts);
+    const topchartsList = new Topcharts({ topcharts, active });
+    await topchartsList.save();
+    console.log(topchartsList);
+    res.send(topchartsList);
   } catch (err) {
     res.status(422).send({ error: err.message });
   }
 });
 
 router.put("/", async (req, res) => {
-  const { topchart, id, name } = req.body;
-  //   let id = "5fe8d77ebfedc943602cf95c";
+  const { topcharts, active } = req.body;
+  let id = "5ff3424fd5f2de1114a0e3ba";
 
-  console.log(topchart, id, name);
+  console.log(topcharts, active);
 
   try {
     Topcharts.findById(id, (err, foundList) => {
       if (err) {
         res.send(err);
       } else {
-        foundList.updateOne({ topchart }, (err, updatedList) => {
+        foundList.updateOne({ topcharts, active }, (err, updatedList) => {
           if (err) {
             res.send({ message: "error updating list" });
           } else {
@@ -46,8 +46,8 @@ router.put("/", async (req, res) => {
               res.status(201).json({
                 message: "Updated List",
                 id: foundList._id,
-                topchart: foundList.topchart,
-                name: foundList.name,
+                topcharts: foundList.topcharts,
+                active: foundList.active,
               });
               return foundList;
             });
