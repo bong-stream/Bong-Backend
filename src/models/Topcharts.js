@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const mongoosastic = require("mongoosastic");
 
 const TopchartsSchema = new mongoose.Schema({
-  topchart: { type: Array, required: true },
-  name: String,
-  active: { type: Boolean },
+  topcharts: { type: Array, required: true },
+  active: { type: Boolean, default: true },
 
   __v: { type: Number, select: false },
 });
