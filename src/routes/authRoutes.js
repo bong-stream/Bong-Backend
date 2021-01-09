@@ -3,19 +3,26 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = mongoose.model("User");
 const SendOtp = require("sendotp");
-
+const nodemailer = require("nodemailer");
 const router = express.Router();
+var otpGenerator = require("otp-generator");
+const Emailotp = require("../models/Emailotp");
+var emailOtp;
 
 const sendOtp = new SendOtp("9146A4XsuWgB5fe97a0fP123");
 
 router.post("/sendotp", (req, res) => {
-  sendOtp.send(req.body.phoneNumber, "id_of_send", (err, data) => {
-    console.log(data);
-    if (err) return res.json({ err });
-    data.type == "success"
-      ? res.json({ success: true, message: data.message })
-      : res.json({ success: false, message: data.message });
-  });
+  if (req.body.phoneNumber) {
+    console.log(sendOtp);
+    sendOtp.send(req.body.phoneNumber, "id_of_send", "4635", (err, data) => {
+      console.log(data);
+      if (err) return res.json({ err });
+      data.type == "success"
+        ? res.json({ success: true, message: data.message })
+        : res.json({ success: false, message: data.message });
+    });
+  } else {
+  }
 });
 
 router.post("/verify", (req, res) => {
@@ -39,6 +46,100 @@ router.post("/verify", (req, res) => {
     }
     if (data.type == "error") {
       res.json({ success: false, message: data.message });
+    }
+  });
+});
+
+const sendEmailOtp = (otp, email) => {
+  if (otp && email) {
+    const output = `
+            <p>You Email Verification code</p>
+            <h3>Bong</h3>
+            <ul>  
+              <li>Registered for: ${email}</li>
+            </ul>
+            <h3>OTP</h3>
+            <p>${otp}</p>
+            `;
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      host: "smtp.google.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      requireTLS: true,
+      service: "gmail",
+      auth: {
+        user: "queryaidataron@gmail.com", // generated ethereal user
+        pass: "nwnxovucjfoqqwww", // generated ethereal password
+      },
+    });
+
+    // setup email data with unicode symbols
+    let mailOptions = {
+      from: '"User Query" <queryaidataron@gmail.com>', // sender address
+      to: email, // list of receivers
+      // subject: subject, // Subject line
+      // text: details, // plain text body
+      html: output, // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, async (error, info) => {
+      if (error) {
+        return console.log(error);
+        console.log("there is error");
+      } else {
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+        let emailOtp = new Emailotp({
+          email,
+          otp,
+        });
+        await emailOtp.save();
+        // res.status(200).json({ message: "Check Your Email" });
+        return { message: "Check Your Email" };
+      }
+    });
+  } else {
+    // res.status(401).json({ message: "Something went Wrong" });
+    return { message: "Something went wrong" };
+  }
+};
+
+router.post("/sendemailotp", (req, res) => {
+  let { email } = req.body;
+  let otp = otpGenerator.generate(4, {
+    upperCase: false,
+    specialChars: false,
+    alphabets: false,
+  });
+
+  if (email && otp) {
+    Emailotp.findOne({ email }).then(async (user) => {
+      if (user) {
+        res.status(401).json({ message: "User Email already used" });
+      } else {
+        let response = sendEmailOtp(otp, email);
+        console.log(response);
+        res.status(200).json(response);
+      }
+    });
+  } else {
+    res.status(401).json({ message: "Somthing Went Wrong" });
+  }
+});
+
+router.post("/verifyemailotp", (req, res) => {
+  let { otp, email } = req.body;
+  Emailotp.findOne({ email }).then(async (user) => {
+    if (user) {
+      user.otp === otp
+        ? res.status(200).json({ message: "User Verified" })
+        : res.status(401).json({ message: "Wrong OTP" });
+    } else {
+      res.status(401).json({ message: "Somthing Went Wrong" });
     }
   });
 });
