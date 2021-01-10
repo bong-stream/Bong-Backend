@@ -14,6 +14,13 @@ router.get("/", async (req, res) => {
   res.send(artist);
 });
 
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  const artist = await Artist.findOne({ _id: id });
+  console.log(artist);
+  res.send(artist);
+});
+
 router.post("/", async (req, res) => {
   const { artistname, artistimage } = req.body.data;
   const albums = req.body.albums;
