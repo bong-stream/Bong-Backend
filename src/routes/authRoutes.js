@@ -123,7 +123,7 @@ router.post("/sendemailotp", (req, res) => {
       } else {
         let response = sendEmailOtp(otp, email);
         console.log(response);
-        res.status(200).json(response);
+        res.status(200).json({ success: true });
       }
     });
   } else {
