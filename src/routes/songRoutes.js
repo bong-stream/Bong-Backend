@@ -24,8 +24,11 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/play/:id", (req, res) => {
-  console.log(req.params.id);
+  const space = " hello";
+  let isFinished = false;
+  let isDataSent = false;
   let db = req.app.get("db");
+
   try {
     var trackID = new ObjectID(req.params.id);
   } catch (err) {
@@ -34,6 +37,7 @@ router.get("/play/:id", (req, res) => {
         "Invalid trackID in URL parameter. Must be a single String of 12 bytes or a string of 24 hex characters",
     });
   }
+
   res.set("content-type", "audio/mp3");
   res.set("accept-ranges", "bytes");
 
@@ -41,22 +45,43 @@ router.get("/play/:id", (req, res) => {
     bucketName: "songs",
   });
 
-  console.log(bucket);
   let downloadStream = bucket.openDownloadStream(trackID);
-  // console.log(downloadStream);
+
+  const waitAndSend = () => {
+    setTimeout(() => {
+      // If the response hasn't finished and hasn't sent any data back....
+      if (!isDataSent) {
+        // Need to write the status code/headers if they haven't been sent yet.
+
+        // if (!res.headersSent) {
+        //   res.writeHead(202);
+        // }
+
+        res.write(space);
+
+        // Wait another 15 seconds
+        waitAndSend();
+      }
+    }, 15000);
+  };
+
   downloadStream.on("data", (chunk) => {
-    console.log(chunk);
+    if (chunk) {
+      console.log("I have chunk");
+      isDataSent = true;
+    }
     res.write(chunk);
   });
 
   downloadStream.on("error", () => {
-    console.log("i am running");
     res.sendStatus(404);
   });
 
   downloadStream.on("end", () => {
     res.end();
   });
+
+  waitAndSend();
 });
 
 router.post("/", upload.single("file"), async (req, res) => {
