@@ -87,7 +87,7 @@ const sendEmailOtp = (otp, email) => {
     // send mail with defined transport object
     transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
-        return console.log(error);
+        return error;
         console.log("there is error");
       } else {
         console.log("Message sent: %s", info.messageId);
@@ -99,12 +99,13 @@ const sendEmailOtp = (otp, email) => {
         });
         await emailOtp.save();
         // res.status(200).json({ message: "Check Your Email" });
-        return { message: "Check Your Email" };
+        // return true;
       }
     });
+    return true;
   } else {
     // res.status(401).json({ message: "Something went Wrong" });
-    return { message: "Something went wrong" };
+    return false;
   }
 };
 
@@ -123,7 +124,13 @@ router.post("/sendemailotp", (req, res) => {
       } else {
         let response = sendEmailOtp(otp, email);
         console.log(response);
-        res.status(200).json({ success: true });
+        if (response) {
+          res.status(200).json({ success: true });
+        } else {
+          res
+            .status(401)
+            .json({ success: false, message: "Something went wrong" });
+        }
       }
     });
   } else {
