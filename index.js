@@ -118,6 +118,14 @@ app.get("/api", (req, res) => {
   res.send(`You are in Api`);
 });
 
-app.listen(PORT, () => {
-  console.log("listening on " + PORT);
+// app.listen(PORT, () => {
+//   console.log("listening on " + PORT);
+// });
+
+app.listen(process.env.PORT || 3001, function () {
+  console.log(
+    "Express server listening on port %d in %s mode",
+    this.address().port,
+    app.settings.env
+  );
 });

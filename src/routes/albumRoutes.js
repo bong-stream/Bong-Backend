@@ -15,16 +15,67 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { albumname, albumimage, artists, songs } = req.body;
+  const {
+    albumname,
+    albumimage,
+    artists,
+    songs,
+    tracks,
+    category,
+    genres,
+    duration,
+    relatedalbums,
+    otheralbums,
+    poets,
+    mixmaster,
+    producer,
+    label,
+    year,
+    summary,
+  } = req.body;
 
-  console.log(albumname, albumimage, artists, songs);
+  console.log({
+    albumname,
+    albumimage,
+    artists,
+    songs,
+    tracks,
+    category,
+    genres,
+    duration,
+    relatedalbums,
+    otheralbums,
+    poets,
+    mixmaster,
+    producer,
+    label,
+    year,
+    summary,
+  });
 
   if (!albumname || !albumimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
   try {
-    const album = new Album({ albumname, albumimage, artists, songs });
+    const album = new Album({
+      albumname,
+      albumimage,
+      artists,
+      songs,
+      tracks,
+      category,
+      genres,
+      duration,
+      relatedalbums,
+      otheralbums,
+      poets,
+      mixmaster,
+      producer,
+      label,
+      year,
+      summary,
+    });
     await album.save();
     res.status(201).json(album);
   } catch (err) {
@@ -33,7 +84,25 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { albumname, albumimage, id, artists, songs } = req.body;
+  const {
+    albumname,
+    albumimage,
+    artists,
+    songs,
+    tracks,
+    category,
+    genres,
+    duration,
+    relatedalbums,
+    otheralbums,
+    poets,
+    mixmaster,
+    producer,
+    label,
+    year,
+    summary,
+    id,
+  } = req.body;
   console.log(id);
 
   Album.findById(id, (err, album) => {
@@ -44,6 +113,18 @@ router.put("/", async (req, res) => {
           albumimage,
           artists,
           songs,
+          tracks,
+          category,
+          genres,
+          duration,
+          relatedalbums,
+          otheralbums,
+          poets,
+          mixmaster,
+          producer,
+          label,
+          year,
+          summary,
         },
         (err, updatedalbum) => {
           if (err) {
@@ -59,6 +140,15 @@ router.put("/", async (req, res) => {
                 albumimage: foundUpdatedEvent.albumimage,
                 artists: foundUpdatedEvent.artists,
                 songs: foundUpdatedEvent.songs,
+                tracks: foundUpdatedEvent.tracks,
+                genres: foundUpdatedEvent.genres,
+                duration: foundUpdatedEvent.duration,
+                poets: foundUpdatedEvent.poets,
+                mixmaster: foundUpdatedEvent.mixmaster,
+                producer: foundUpdatedEvent.producer,
+                label: foundUpdatedEvent.label,
+                year: foundUpdatedEvent.year,
+                summary: foundUpdatedEvent.summary,
               });
               return foundUpdatedEvent;
             });
