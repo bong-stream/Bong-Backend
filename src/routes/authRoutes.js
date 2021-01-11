@@ -120,23 +120,19 @@ router.post("/sendemailotp", (req, res) => {
   if (email && otp) {
     Emailotp.findOne({ email }).then(async (user) => {
       if (user) {
-        res
-          .status(401)
-          .json({ success: false, message: "User Email already used" })
+        res.json({ success: false, message: "User Email already used" })
       } else {
         let response = sendEmailOtp(otp, email)
         console.log(response)
         if (response) {
-          res.status(200).json({ success: true })
+          res.json({ success: true })
         } else {
-          res
-            .status(401)
-            .json({ success: false, message: "Something went wrong" })
+          res.json({ success: false, message: "Something went wrong" })
         }
       }
     })
   } else {
-    res.status(401).json({ success: false, message: "Somthing Went Wrong" })
+    res.json({ success: false, message: "Somthing Went Wrong" })
   }
 })
 
@@ -145,10 +141,10 @@ router.post("/verifyemailotp", (req, res) => {
   Emailotp.findOne({ email }).then(async (user) => {
     if (user) {
       user.otp === otp
-        ? res.status(200).json({ success: true, message: "User Verified" })
-        : res.status(401).json({ success: false, message: "Wrong OTP" })
+        ? res.json({ success: true, message: "User Verified" })
+        : res.json({ success: false, message: "Wrong OTP" })
     } else {
-      res.status(401).json({ success: false, message: "Somthing Went Wrong" })
+      res.json({ success: false, message: "Somthing Went Wrong" })
     }
   })
 })
