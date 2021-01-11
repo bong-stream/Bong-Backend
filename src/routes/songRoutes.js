@@ -41,14 +41,16 @@ router.get("/play/:id", (req, res) => {
     bucketName: "songs",
   });
 
+  console.log(bucket);
   let downloadStream = bucket.openDownloadStream(trackID);
-
+  // console.log(downloadStream);
   downloadStream.on("data", (chunk) => {
     console.log(chunk);
     res.write(chunk);
   });
 
   downloadStream.on("error", () => {
+    console.log("i am running");
     res.sendStatus(404);
   });
 
