@@ -10,6 +10,15 @@ const SongsSchema = new mongoose.Schema({
   songlikes: { type: Number },
   noofplays: { type: Number },
   fileid: { type: String },
+  genres: String,
+  lyrics: String,
+  relatedSongs: Array,
+  poet: String,
+  mixmaster: String,
+  producer: String,
+  label: String,
+  year: String,
+  summary: String,
 
   __v: { type: Number, select: false },
 });
