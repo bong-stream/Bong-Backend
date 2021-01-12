@@ -193,7 +193,21 @@ router.delete("/", async (req, res) => {
 });
 
 router.put("/", fileupload.single("songimage"), async (req, res) => {
-  const { songname, songimage, id, artists } = req.body;
+  const {
+    songname,
+    songimage,
+    artists,
+    genres,
+    lyrics,
+    poet,
+    relatedSongs,
+    mixmaster,
+    producer,
+    year,
+    summary,
+    label,
+    id,
+  } = req.body;
   console.log(songname, id, songimage, artists);
 
   Song.findById(id, (err, event) => {
@@ -204,6 +218,15 @@ router.put("/", fileupload.single("songimage"), async (req, res) => {
           songname,
           songimage,
           artists,
+          genres,
+          lyrics,
+          poet,
+          relatedSongs,
+          mixmaster,
+          producer,
+          year,
+          summary,
+          label,
         },
         (err, updatedEvent) => {
           if (err) {
