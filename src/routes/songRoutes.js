@@ -67,7 +67,6 @@ router.get("/play/:id", (req, res) => {
 
   downloadStream.on("data", (chunk) => {
     if (chunk) {
-      console.log("I have chunk");
       isDataSent = true;
     }
     res.write(chunk);
@@ -133,8 +132,6 @@ router.post("/", upload.single("file"), async (req, res) => {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
-  console.log(songname, songimage, artists, fileid);
-
   try {
     const song = new Song({
       songname,
@@ -152,7 +149,6 @@ router.post("/", upload.single("file"), async (req, res) => {
       fileid,
     });
     await song.save();
-    console.log(song);
     res.send(song);
   } catch (err) {
     res.status(422).send({ error: err.message });
@@ -164,7 +160,7 @@ router.delete("/", async (req, res) => {
   let db = req.app.get("db");
 
   Song.findById(id, (err, event) => {
-    console.log(db);
+    // console.log(db);
 
     // console.log(deleteStream);
     try {
@@ -208,10 +204,8 @@ router.put("/", fileupload.single("songimage"), async (req, res) => {
     label,
     id,
   } = req.body;
-  console.log(songname, id, songimage, artists);
 
   Song.findById(id, (err, event) => {
-    console.log(event);
     try {
       event.updateOne(
         {
@@ -234,7 +228,6 @@ router.put("/", fileupload.single("songimage"), async (req, res) => {
           } else {
             console.log("Song Updated");
             Song.findById(id, (err, foundUpdatedEvent) => {
-              console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",
                 id: foundUpdatedEvent._id,
