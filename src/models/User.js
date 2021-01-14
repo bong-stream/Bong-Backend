@@ -13,6 +13,9 @@ const userSchema = new mongoose.Schema({
   age: { type: String, required: true },
   gender: { type: String, required: true },
   phoneNumber: { type: String },
+  timestamp: { type: Date, default: Date.now },
+  userimage: String,
+  active: { type: "boolean", default: true },
 
   // __v: { type: Number, select: false },
 });
