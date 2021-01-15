@@ -7,7 +7,12 @@ const ArtistSchema = new mongoose.Schema({
   artistname: { type: String, required: true },
   artistimage: { type: String, required: true },
   artistlikes: { type: Number },
-
+  lastname: String,
+  dob: String,
+  city: String,
+  country: String,
+  active: { type: "boolean", default: true },
+  timestamp: { type: Date, default: Date.now },
   __v: { type: Number, select: false },
 });
 

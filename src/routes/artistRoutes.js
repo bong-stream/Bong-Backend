@@ -22,21 +22,34 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { artistname, artistimage } = req.body.data;
+  const {
+    artistname,
+    artistimage,
+    dob,
+    city,
+    country,
+    lastname,
+  } = req.body.data;
   const albums = req.body.albums;
   const songs = req.body.songs;
-  console.log("we are songs", req.body.songs);
-  console.log(artistname, artistimage, albums, songs);
 
   if (!artistname || !artistimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
 
   try {
-    const artist = new Artist({ artistname, artistimage, albums, songs });
+    const artist = new Artist({
+      artistname,
+      artistimage,
+      dob,
+      city,
+      country,
+      lastname,
+      albums,
+      songs,
+    });
     console.log(artist);
     artist.save();
-    console.log(artist);
     res.status(201).json(artist);
   } catch (err) {
     res.status(422).send({ error: err.message });
@@ -44,7 +57,17 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { artistname, artistimage, id, albums, songs } = req.body;
+  const {
+    artistname,
+    artistimage,
+    dob,
+    city,
+    country,
+    lastname,
+    id,
+    albums,
+    songs,
+  } = req.body;
   console.log(albums, id);
 
   Artist.findById(id, (err, event) => {
@@ -53,6 +76,10 @@ router.put("/", async (req, res) => {
         {
           artistname,
           artistimage,
+          dob,
+          city,
+          country,
+          lastname,
           albums,
           songs,
         },
@@ -62,7 +89,6 @@ router.put("/", async (req, res) => {
           } else {
             console.log("yoooooo");
             Artist.findById(id, (err, foundUpdatedEvent) => {
-              console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",
                 id: foundUpdatedEvent._id,
@@ -102,6 +128,38 @@ router.delete("/", (req, res, next) => {
           });
         }
       });
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
+
+router.put("/activeartists", async (req, res) => {
+  const { active, id } = req.body;
+  console.log(active, id);
+
+  Artist.findById(id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          active,
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("Updated");
+            Artist.findById(id, (err, foundUpdatedEvent) => {
+              res.status(201).json({
+                message: "Updated event",
+                id: foundUpdatedEvent._id,
+                active: foundUpdatedEvent.active,
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
     } catch (err) {
       res.status(422).send({ error: err.message });
     }
