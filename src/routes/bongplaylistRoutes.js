@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const bongplaylist = req.body;
+  const bongplaylist = req.body.bongplaylist;
 
   try {
     const bongplaylistres = new Bongplaylist(bongplaylist);
@@ -28,10 +28,14 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { bongplaylist, active } = req.body;
-  let id = "5ff028bb82654121a8460403";
+  let { bongplaylist, active } = req.body;
+  let id = "600163cb4e28412b9453ca34";
 
   //   console.log(trending);
+  if (bongplaylist === null || active === null) {
+    bongplaylist = [];
+    active = true;
+  }
 
   try {
     Bongplaylist.findById(id, (err, foundList) => {

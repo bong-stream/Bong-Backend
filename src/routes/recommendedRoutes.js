@@ -28,11 +28,15 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { recommended, active } = req.body;
+  let { recommended, active } = req.body;
   let id = "5ff02931d5bda33c4044e162";
 
   //   console.log(trending);
-
+  if (recommended === null) {
+    recommended = [];
+  } else if (active === null) {
+    active = true;
+  }
   try {
     Recommended.findById(id, (err, foundList) => {
       if (err) {
