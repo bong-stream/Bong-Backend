@@ -45,10 +45,14 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { topalbums, active } = req.body;
+  let { topalbums, active } = req.body;
   let id = "5ff02a0e0fb98141144b32fc";
 
   //   console.log(trending);
+  if (topalbums === null || active === null) {
+    topalbums = [];
+    active = true;
+  }
 
   try {
     Topalbums.findById(id, (err, foundList) => {

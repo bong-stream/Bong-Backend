@@ -28,10 +28,14 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { trending, active } = req.body;
+  let { trending, active } = req.body;
   let id = "5fef33fcfc460b3dacbb81c2";
 
   //   console.log(trending);
+  if (trending === null || active === null) {
+    trending = [];
+    active = true;
+  }
 
   try {
     Trending.findById(id, (err, foundList) => {

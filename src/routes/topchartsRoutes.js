@@ -28,10 +28,13 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { topcharts, active } = req.body;
-  let id = "5ff3424fd5f2de1114a0e3ba";
+  let { topcharts, active } = req.body;
+  let id = "6001643b0d7ac602e4291918";
 
-  console.log(topcharts, active);
+  if (topcharts === null || active === null) {
+    topcharts = [];
+    active = true;
+  }
 
   try {
     Topcharts.findById(id, (err, foundList) => {

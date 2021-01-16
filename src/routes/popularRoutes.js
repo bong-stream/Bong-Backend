@@ -28,10 +28,15 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { popular, active } = req.body;
+  let { popular, active } = req.body;
   let id = "5fef345663cb1e3a1cd36877";
 
   //   console.log(trending);
+  if (popular === null) {
+    popular = [];
+  } else if (active === null) {
+    active = true;
+  }
 
   try {
     Popular.findById(id, (err, foundList) => {

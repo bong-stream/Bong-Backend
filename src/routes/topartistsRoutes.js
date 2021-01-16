@@ -28,10 +28,14 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { topartists, active } = req.body;
+  let { topartists, active } = req.body;
   let id = "5ff0299610fec41c480b67a4";
 
   //   console.log(trending);
+  if (topartists === null || active === null) {
+    topartists = [];
+    active = true;
+  }
 
   try {
     Topartists.findById(id, (err, foundList) => {
