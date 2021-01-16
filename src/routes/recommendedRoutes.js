@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const recommendedList = new Recommended(recommended);
     await recommendedList.save();
-    console.log(recommendedList);
     res.send(recommendedList);
   } catch (err) {
     res.status(422).send({ error: err.message });
@@ -31,7 +30,6 @@ router.put("/", async (req, res) => {
   let { recommended, active } = req.body;
   let id = "5ff02931d5bda33c4044e162";
 
-  //   console.log(trending);
   if (recommended === null) {
     recommended = [];
   } else if (active === null) {

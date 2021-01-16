@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const bongplaylistres = new Bongplaylist(bongplaylist);
     await bongplaylistres.save();
-    console.log(bongplaylistres);
     res.send(bongplaylistres);
   } catch (err) {
     res.status(422).send({ error: err.message });
@@ -31,7 +30,6 @@ router.put("/", async (req, res) => {
   let { bongplaylist, active } = req.body;
   let id = "600163cb4e28412b9453ca34";
 
-  //   console.log(trending);
   if (bongplaylist === null || active === null) {
     bongplaylist = [];
     active = true;

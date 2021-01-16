@@ -34,25 +34,6 @@ router.post("/", async (req, res) => {
     summary,
   } = req.body;
 
-  console.log({
-    albumname,
-    albumimage,
-    artists,
-    songs,
-    tracks,
-    category,
-    genres,
-    duration,
-    relatedalbums,
-    otheralbums,
-    poets,
-    mixmaster,
-    producer,
-    label,
-    year,
-    summary,
-  });
-
   if (!albumname || !albumimage) {
     return res.status(422).send({ error: "You must provide a name,image" });
   }
@@ -103,7 +84,6 @@ router.put("/", async (req, res) => {
     summary,
     id,
   } = req.body;
-  console.log(id);
 
   Album.findById(id, (err, album) => {
     try {
@@ -130,9 +110,7 @@ router.put("/", async (req, res) => {
           if (err) {
             console.log("error updating", err);
           } else {
-            console.log("yoooooo");
             Album.findById(id, (err, foundUpdatedEvent) => {
-              console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",
                 id: foundUpdatedEvent._id,
@@ -162,14 +140,9 @@ router.put("/", async (req, res) => {
 });
 
 router.delete("/", (req, res, next) => {
-  console.log("dleetinggggg");
-
   const { id } = req.body;
-  console.log(id);
 
   Album.findById(id, (err, album) => {
-    console.log(id);
-    console.log(album);
     try {
       album.remove((err) => {
         if (err) {
@@ -181,6 +154,37 @@ router.delete("/", (req, res, next) => {
           });
         }
       });
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
+
+router.put("/activealbums", async (req, res) => {
+  const { active, id } = req.body;
+
+  Album.findById(id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          active,
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("Updated");
+            Album.findById(id, (err, foundUpdatedEvent) => {
+              res.status(201).json({
+                message: "Updated event",
+                id: foundUpdatedEvent._id,
+                active: foundUpdatedEvent.active,
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
     } catch (err) {
       res.status(422).send({ error: err.message });
     }

@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   const artist = await Artist.findOne({ _id: id });
-  console.log(artist);
   res.send(artist);
 });
 
@@ -48,7 +47,6 @@ router.post("/", async (req, res) => {
       albums,
       songs,
     });
-    console.log(artist);
     artist.save();
     res.status(201).json(artist);
   } catch (err) {
@@ -68,7 +66,6 @@ router.put("/", async (req, res) => {
     albums,
     songs,
   } = req.body;
-  console.log(albums, id);
 
   Artist.findById(id, (err, event) => {
     try {
@@ -87,7 +84,6 @@ router.put("/", async (req, res) => {
           if (err) {
             console.log("error updating", err);
           } else {
-            console.log("yoooooo");
             Artist.findById(id, (err, foundUpdatedEvent) => {
               res.status(201).json({
                 message: "Updated event",
@@ -109,14 +105,9 @@ router.put("/", async (req, res) => {
 });
 
 router.delete("/", (req, res, next) => {
-  console.log("dleetinggggg");
-
   const { id } = req.body;
-  console.log(id);
 
   Artist.findById(id, (err, artist) => {
-    console.log(id);
-    console.log(artist);
     try {
       artist.remove((err) => {
         if (err) {
@@ -136,7 +127,6 @@ router.delete("/", (req, res, next) => {
 
 router.put("/activeartists", async (req, res) => {
   const { active, id } = req.body;
-  console.log(active, id);
 
   Artist.findById(id, (err, event) => {
     try {

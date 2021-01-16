@@ -13,9 +13,7 @@ const sendOtp = new SendOtp("9146A4XsuWgB5fe97a0fP123");
 
 router.post("/sendotp", (req, res) => {
   if (req.body.phoneNumber) {
-    // console.log(sendOtp)
     sendOtp.send(req.body.phoneNumber, "id_of_send", "4635", (err, data) => {
-      console.log(data);
       if (err) return res.json({ err });
       data.type == "success"
         ? res.json({ success: true, message: data.message })
@@ -34,12 +32,10 @@ router.post("/verify", (req, res) => {
         if (err) return res.json({ err });
         if (!user) {
           // user signup
-          console.log("new user");
           res.json({ success: true, message: data.message });
         }
         if (user) {
           // user signin
-          console.log("old user");
           res.json({ success: false, message: data.message });
         }
       });
@@ -88,7 +84,6 @@ const sendEmailOtp = (otp, email) => {
     transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
         return error;
-        console.log("there is error");
       } else {
         console.log("Message sent: %s", info.messageId);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
@@ -123,7 +118,6 @@ router.post("/sendemailotp", (req, res) => {
         res.json({ success: false, message: "User Email already used" });
       } else {
         let response = sendEmailOtp(otp, email);
-        console.log(response);
         if (response) {
           res.json({ success: true });
         } else {
@@ -153,10 +147,8 @@ router.post("/signup", async (req, res) => {
   //console.log(req.body)
   const { name, email, number, password, age, gender } = req.body;
   if (email) {
-    console.log(req.body);
     let phoneNumber = "";
     User.findOne({ email: email }).then(async (user) => {
-      console.log(user);
       if (user) {
         res.status(401).json({
           message: "User Already Exists",
@@ -170,7 +162,6 @@ router.post("/signup", async (req, res) => {
             age,
             gender,
           });
-          console.log(user);
           await user.save();
 
           const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
@@ -181,7 +172,6 @@ router.post("/signup", async (req, res) => {
       }
     });
   } else {
-    console.log(req.body);
     let email = "";
     User.findOne({ phoneNumber: number }).then(async (user) => {
       if (user) {
@@ -198,7 +188,6 @@ router.post("/signup", async (req, res) => {
             gender,
           });
           await user.save();
-          //console.log(user);
 
           const token = jwt.sign({ userId: user._id }, "My_Secret_Key");
           res.send({ token, user });

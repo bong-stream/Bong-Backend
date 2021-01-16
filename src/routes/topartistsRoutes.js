@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const topartistslist = new Topartists(topartists);
     await topartistslist.save();
-    console.log(topartistslist);
     res.send(topartistslist);
   } catch (err) {
     res.status(422).send({ error: err.message });

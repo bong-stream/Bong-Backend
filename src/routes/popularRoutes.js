@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const popularList = new Popular(popular);
     await popularList.save();
-    console.log(popularList);
     res.send(popularList);
   } catch (err) {
     res.status(422).send({ error: err.message });
@@ -31,7 +30,6 @@ router.put("/", async (req, res) => {
   let { popular, active } = req.body;
   let id = "5fef345663cb1e3a1cd36877";
 
-  //   console.log(trending);
   if (popular === null) {
     popular = [];
   } else if (active === null) {

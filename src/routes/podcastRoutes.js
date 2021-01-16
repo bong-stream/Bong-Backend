@@ -1,30 +1,28 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const requireAuth = require('../midlewares/requireAuth');
+const express = require("express");
+const mongoose = require("mongoose");
+const requireAuth = require("../midlewares/requireAuth");
 
-const Podcast= mongoose.model('Podcast');
+const Podcast = mongoose.model("Podcast");
 
 const router = express.Router();
 
 //router.use(requireAuth);
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const podcast = await Podcast.find();
 
   res.send(podcast);
 });
 
-router.post('/', async (req, res) => {
-  const { podname, podimage,podlikes,noofplays } = req.body;
+router.post("/", async (req, res) => {
+  const { podname, podimage, podlikes, noofplays } = req.body;
 
-  if (!podname || !podimage ) {
-    return res
-      .status(422)
-      .send({ error: 'You must provide a name,image' });
+  if (!podname || !podimage) {
+    return res.status(422).send({ error: "You must provide a name,image" });
   }
 
   try {
-    const podcast = new Podcast({ podname, podimage, podlikes,noofplays});
+    const podcast = new Podcast({ podname, podimage, podlikes, noofplays });
     await podcast.save();
     res.send(podcast);
   } catch (err) {
@@ -33,12 +31,9 @@ router.post('/', async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-
-
   const { id } = req.body;
-  
 
- Podcast.findById(id, (err, event) => {
+  Podcast.findById(id, (err, event) => {
     try {
       event.remove((err) => {
         if (err) {
@@ -58,14 +53,16 @@ router.delete("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
-  const { podname, podimage,podlikes,noofplays,id } = req.body;
-  console.log(podname,id);
+  const { podname, podimage, podlikes, noofplays, id } = req.body;
 
   Podcast.findById(id, (err, event) => {
     try {
       event.updateOne(
         {
-          podname, podimage,podlikes,noofplays,
+          podname,
+          podimage,
+          podlikes,
+          noofplays,
         },
         (err, updatedEvent) => {
           if (err) {
@@ -73,14 +70,13 @@ router.put("/", async (req, res) => {
           } else {
             console.log("Podcast Updated");
             Podcast.findById(id, (err, foundUpdatedEvent) => {
-              console.log(foundUpdatedEvent);
               res.status(201).json({
                 message: "Updated event",
                 id: foundUpdatedEvent._id,
-                podname:foundUpdatedEvent.podname,
-                podimage:foundUpdatedEvent.podimage,
-                podlikes:foundUpdatedEvent.podlikes,
-                noofplays:foundUpdatedEvent.noofplays
+                podname: foundUpdatedEvent.podname,
+                podimage: foundUpdatedEvent.podimage,
+                podlikes: foundUpdatedEvent.podlikes,
+                noofplays: foundUpdatedEvent.noofplays,
               });
               return foundUpdatedEvent;
             });
@@ -92,7 +88,5 @@ router.put("/", async (req, res) => {
     }
   });
 });
-
-
 
 module.exports = router;

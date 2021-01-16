@@ -19,6 +19,7 @@ const AlbumSchema = new mongoose.Schema({
   label: String,
   year: String,
   summary: String,
+  active: { type: "boolean", default: true },
 
   __v: { type: Number, select: false },
 });

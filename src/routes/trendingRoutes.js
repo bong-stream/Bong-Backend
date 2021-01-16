@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
   try {
     const trendingList = new Trending(trending);
     await trendingList.save();
-    console.log(trendingList);
     res.send(trendingList);
   } catch (err) {
     res.status(422).send({ error: err.message });
