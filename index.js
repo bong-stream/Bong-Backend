@@ -21,10 +21,12 @@ const bongplaylist = require("./src/routes/bongplaylistRoutes");
 const recommended = require("./src/routes/recommendedRoutes");
 const topartists = require("./src/routes/topartistsRoutes");
 const topalbums = require("./src/routes/topalbumsRoutes");
+const genres = require("./src/routes/genresRoutes");
+const category = require("./src/routes/categoryRoutes");
 
-var  path = require("path");
-var  cookieParser = require("cookie-parser");
-var  logger = require("morgan");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
 const PORT = process.env.PORT || 3001;
 
@@ -35,10 +37,10 @@ const app = express();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-  app.use(logger("dev"));
-  app.use(express.json());
-  app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, "public")));
+app.use(logger("dev"));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
 
 let db;
 mongoose
@@ -47,7 +49,7 @@ mongoose
     {
       useNewUrlParser: true,
       useCreateIndex: true,
-     useUnifiedTopology: true,
+      useUnifiedTopology: true,
     }
   )
   .then((client) => {
@@ -62,12 +64,9 @@ mongoose
     console.log("error", err.message);
   });
 
-
-  //for sms otp
-  app.set("views", path.join(__dirname, "views"));
-  app.set("view engine", "ejs");
-
-  
+//for sms otp
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
 // const MongoUri =
 //   "mongodb+srv://bongdev:bongcluster99$@bongcluster.xdmjl.mongodb.net/BongDatabase?retryWrites=true&w=majority";
@@ -113,6 +112,8 @@ app.use("/api/bongplaylist", bongplaylist);
 app.use("/api/recommended", recommended);
 app.use("/api/topalbums", topalbums);
 app.use("/api/topartists", topartists);
+app.use("/api/genres", genres);
+app.use("/api/category", category);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);
