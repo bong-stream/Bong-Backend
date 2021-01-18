@@ -19,6 +19,10 @@ const SongsSchema = new mongoose.Schema({
   label: String,
   year: String,
   summary: String,
+  albums: { type: Array },
+  category: String,
+  active: { type: "boolean", default: true },
+  timestamp: { type: Date, default: Date.now },
 
   __v: { type: Number, select: false },
 });

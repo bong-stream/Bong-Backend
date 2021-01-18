@@ -88,7 +88,9 @@ router.post("/", upload.single("file"), async (req, res) => {
     songname,
     songimage,
     artists,
+    albums,
     genres,
+    category,
     lyrics,
     poet,
     relatedSongs,
@@ -99,8 +101,10 @@ router.post("/", upload.single("file"), async (req, res) => {
     label,
   } = req.body;
   const yoo = artists.split(",");
+  const yoo2 = albums.split(",");
 
   artists = yoo;
+  albums = yoo2;
 
   let db = req.app.get("db");
 
@@ -137,7 +141,9 @@ router.post("/", upload.single("file"), async (req, res) => {
       songname,
       songimage,
       artists,
+      albums,
       genres,
+      category,
       lyrics,
       poet,
       relatedSongs,
@@ -146,7 +152,6 @@ router.post("/", upload.single("file"), async (req, res) => {
       year,
       summary,
       label,
-      fileid,
     });
     await song.save();
     res.send(song);
@@ -232,6 +237,37 @@ router.put("/", fileupload.single("songimage"), async (req, res) => {
                 message: "Updated event",
                 id: foundUpdatedEvent._id,
                 songname: foundUpdatedEvent.songname,
+              });
+              return foundUpdatedEvent;
+            });
+          }
+        }
+      );
+    } catch (err) {
+      res.status(422).send({ error: err.message });
+    }
+  });
+});
+
+router.put("/activesongs", async (req, res) => {
+  const { active, id } = req.body;
+
+  Song.findById(id, (err, event) => {
+    try {
+      event.updateOne(
+        {
+          active,
+        },
+        (err, updatedEvent) => {
+          if (err) {
+            console.log("error updating", err);
+          } else {
+            console.log("Updated");
+            Song.findById(id, (err, foundUpdatedEvent) => {
+              res.status(201).json({
+                message: "Updated event",
+                id: foundUpdatedEvent._id,
+                active: foundUpdatedEvent.active,
               });
               return foundUpdatedEvent;
             });
