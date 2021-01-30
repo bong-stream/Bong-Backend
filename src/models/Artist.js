@@ -12,6 +12,10 @@ const ArtistSchema = new mongoose.Schema({
   city: String,
   country: String,
   active: { type: "boolean", default: true },
+  tags: Array,
+  profession: Array,
+  labels: Array,
+  socialmedia: Array,
   timestamp: { type: Date, default: Date.now },
   __v: { type: Number, select: false },
 });

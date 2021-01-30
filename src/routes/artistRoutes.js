@@ -28,6 +28,10 @@ router.post("/", async (req, res) => {
     city,
     country,
     lastname,
+    tags,
+    labels,
+    profession,
+    socialmedia,
   } = req.body.data;
   const albums = req.body.albums;
   const songs = req.body.songs;
@@ -46,6 +50,10 @@ router.post("/", async (req, res) => {
       lastname,
       albums,
       songs,
+      tags,
+      labels,
+      profession,
+      socialmedia,
     });
     artist.save();
     res.status(201).json(artist);

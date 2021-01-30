@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { genresname, genresimage, songs } = req.body;
+  const { genresname, genresimage, songs, genresdescription } = req.body;
   // console.log(genresname, genresimage, songs);
 
   if (!genresname || !genresimage) {
@@ -33,6 +33,7 @@ router.post("/", async (req, res) => {
       genresname,
       genresimage,
       songs,
+      genresdescription,
     });
     genres.save();
     res.status(201).json(genres);

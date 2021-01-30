@@ -23,6 +23,9 @@ const topartists = require("./src/routes/topartistsRoutes");
 const topalbums = require("./src/routes/topalbumsRoutes");
 const genres = require("./src/routes/genresRoutes");
 const category = require("./src/routes/categoryRoutes");
+const tags = require("./src/routes/tagsRoutes");
+const labels = require("./src/routes/labelsRoutes");
+const profession = require("./src/routes/professionRoutes");
 
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -114,6 +117,9 @@ app.use("/api/topalbums", topalbums);
 app.use("/api/topartists", topartists);
 app.use("/api/genres", genres);
 app.use("/api/category", category);
+app.use("/api/tags", tags);
+app.use("/api/labels", labels);
+app.use("/api/profession", profession);
 
 app.get("/api", (req, res) => {
   res.send(`You are in Api`);

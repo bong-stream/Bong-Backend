@@ -6,6 +6,7 @@ const GenresSchema = new mongoose.Schema({
   genresimage: { type: String, required: true },
   songs: { type: Array, required: true },
   active: { type: "boolean", default: true },
+  genresdescription: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
   __v: { type: Number, select: false },
 });
